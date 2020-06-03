@@ -1,22 +1,24 @@
-sealed trait LinkedList[+A] {
-  def data: A
-  def next: LinkedList[A]
-}
-
-case class MyList[+A](data: A, next: LinkedList[A]) extends LinkedList[A] {
-  override def toString = s"head: $data, next: $next"
-}
-
-object NilList extends LinkedList[Nothing] {
-  def data = throw new NoSuchElementException("head of empty list")
-  def next = throw new UnsupportedOperationException("tail of empty list")
-}
+case class LinkedList(var data: Int, var next: LinkedList = null)
 
 object MyLinkedList extends App {
-  val c1 = MyList(1, NilList)
-  val c2 = MyList(2, c1)
-  val c3 = MyList(3, c2)
-  println(c1)
-  println(c2)
-  println(c3)
+
+  var head: LinkedList = _
+  def push(newData: Int): Unit = {
+    val newNode = LinkedList(newData, head)
+    head = newNode
+  }
+
+  def search(head: LinkedList, searchData: Int): Boolean = {
+    if (head == null) false
+    else if (head.data != searchData) search(head.next, searchData)
+    else true
+  }
+
+  push(10)
+  push(20)
+  push(30)
+  push(40)
+  push(50)
+  println(search(head, 40))
+
 }
